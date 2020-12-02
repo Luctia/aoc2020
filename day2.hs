@@ -2,7 +2,6 @@ module Main where
 
 import Day2data
 import Data.List
-import Data.Bool
 
 main = do
     print (part1)
