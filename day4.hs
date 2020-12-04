@@ -29,17 +29,9 @@ isValidPassport :: String -> Bool
 isValidPassport passport = isInfixOf "byr" passport && isInfixOf "iyr" passport && isInfixOf "eyr" passport && isInfixOf "hgt" passport && isInfixOf "hcl" passport && isInfixOf "ecl" passport && isInfixOf "pid" passport
 
 -- Part 2
-byrValid :: String -> Bool
-byrValid byr = all isDigit byr && toInt >= 1920 && toInt <= 2002
-               where toInt = read byr :: Int
-
-iyrValid :: String -> Bool
-iyrValid iyr = all isDigit iyr && toInt >= 2010 && toInt <= 2020
-               where toInt = read iyr :: Int
-
-eyrValid :: String -> Bool
-eyrValid eyr = all isDigit eyr && toInt >= 2020 && toInt <= 2030
-               where toInt = read eyr :: Int
+validNum :: String -> Int -> Int -> Bool
+validNum input min max = all isDigit input && toInt >= min && toInt <= max
+                         where toInt = read input :: Int
 
 hgtValid :: String -> Bool
 hgtValid hgt
@@ -55,33 +47,31 @@ validIn :: String -> Bool
 validIn hgt = (length hgt) == 4 && toInt >= 59 && toInt <= 76
               where toInt = read (take 2 hgt) :: Int
 
-hclValid :: String -> Bool
-hclValid ('#':hcl) = all isHexDigit hcl && length hcl == 6
-hclValid _ = False
-
 eclValid :: String -> Bool
 eclValid ecl = elem ecl ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
-pidValid :: String -> Bool
-pidValid pid = length (map isDigit pid) == 9 && all isDigit pid
+fieldValid :: String -> String -> Bool
+fieldValid "byr" value = validNum value 1920 2002
+fieldValid "iyr" value = validNum value 2010 2020
+fieldValid "eyr" value = validNum value 2020 2030
+fieldValid "hgt" value = hgtValid value
+fieldValid "hcl" ('#':hcl) = all isHexDigit hcl && length hcl == 6
+fieldValid "ecl" value = eclValid value
+fieldValid "pid" value = length (map isDigit value) == 9 && all isDigit value
+fieldValid "cid" _ = True
+fieldValid _ _ = False
+
+isValidPassport2 :: [String] -> Int -> Bool
+isValidPassport2 [] seen = seen == 7
+isValidPassport2 (element:elements) seen = fieldValid (take 3 element) (drop 4 element) && isValidPassport2 elements newSeen
+                                           where newSeen
+                                                    | take 3 element /= "cid" = seen + 1
+                                                    | otherwise = seen
 
 countValidPassports2 :: [String] -> Int
 countValidPassports2 [] = 0
 countValidPassports2 (passport:passports)
-  | isValidPassport2 (words passport) [] = 1 + countValidPassports2 passports
+  | isValidPassport2 (words passport) 0 = 1 + countValidPassports2 passports
   | otherwise = countValidPassports2 passports
-
-isValidPassport2 :: [String] -> [String] -> Bool
-isValidPassport2 [] seen = length seen == 7
-isValidPassport2 (element:elements) seen
-  | take 3 element == "byr" && byrValid (drop 4 element) && not (elem "byr" seen) = isValidPassport2 elements (seen ++ ["byr"])
-  | take 3 element == "iyr" && iyrValid (drop 4 element) && not (elem "iyr" seen) = isValidPassport2 elements (seen ++ ["iyr"])
-  | take 3 element == "eyr" && eyrValid (drop 4 element) && not (elem "eyr" seen) = isValidPassport2 elements (seen ++ ["eyr"])
-  | take 3 element == "hgt" && hgtValid (drop 4 element) && not (elem "hgt" seen) = isValidPassport2 elements (seen ++ ["hgt"])
-  | take 3 element == "hcl" && hclValid (drop 4 element) && not (elem "hcl" seen) = isValidPassport2 elements (seen ++ ["hcl"])
-  | take 3 element == "ecl" && eclValid (drop 4 element) && not (elem "ecl" seen) = isValidPassport2 elements (seen ++ ["ecl"])
-  | take 3 element == "pid" && pidValid (drop 4 element) && not (elem "pid" seen) = isValidPassport2 elements (seen ++ ["pid"])
-  | take 3 element == "cid" = isValidPassport2 elements seen
-  | otherwise = False
 
 main = (countValidPassports2 . getIndividualPassports [] . lines) <$> readFile "day4input.txt"
