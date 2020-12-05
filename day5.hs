@@ -1,3 +1,5 @@
+import Data.List
+
 testBoardingPasses = ["BFFFBBFRRR", "FFFBBBFRRR", "BBFFBBFRLL"]
 
 calculateSeatID :: String -> Int
@@ -19,11 +21,17 @@ calculateColumn (char:chars) min max
   where range = [min..max]
         maxIndex = length range - 1
 
-getHighestSeatID :: Int -> [String] -> Int
-getHighestSeatID max [] = max
-getHighestSeatID max (boardingPass:boardingPasses)
-  | seatID > max = getHighestSeatID seatID boardingPasses
-  | otherwise = getHighestSeatID max boardingPasses
-  where seatID = calculateSeatID boardingPass
+main = (maximum . getAllSeatIDs . lines) <$> readFile "day5data.txt"
 
-main = (getHighestSeatID (-1) . lines) <$> readFile "day5data.txt"
+getAllSeatIDs :: [String] -> [Int]
+getAllSeatIDs [] = []
+getAllSeatIDs (boardingPass:boardingPasses) = calculateSeatID boardingPass : getAllSeatIDs boardingPasses
+
+getMissingSeatID :: [Int] -> Int
+getMissingSeatID (id1:id2:ids)
+  | id1 + 1 == id2 = getMissingSeatID (id2:ids)
+  | otherwise = id1 + 1
+
+main2 = (getMissingSeatID . sort . getAllSeatIDs . lines) <$> readFile "day5data.txt"
+
+maintest = (sort . getAllSeatIDs . lines) <$> readFile "day5data.txt"
