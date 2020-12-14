@@ -66,10 +66,10 @@ walkThroughInput2 memory mask (inst:insts)
         allpos = map (binToDec) (allPosibilities (decToBin location) mask [[]])
         addToMemory = [ (pos, newValue) | pos <- allpos ]
 
-getMemorySum2 :: [Int] -> [(Int, Int)] -> Int
-getMemorySum2 seen [] = 0
-getMemorySum2 seen (m:memory)
-  | elem (fst m) seen = getMemorySum2 seen memory
-  | otherwise = (snd m) + getMemorySum2 ((fst m):seen) memory
+getMemorySum2 :: Int -> [(Int, Int)] -> Int
+getMemorySum2 _ [] = 0
+getMemorySum2 previous (m:memory)
+  | (fst m) == previous = getMemorySum2 previous memory
+  | otherwise = (snd m) + getMemorySum2 (fst m) memory
 
-part2 = (getMemorySum2 [] . walkThroughInput2 [] "" . lines) <$> readFile "day14input.txt"
+part2 = (getMemorySum2 (-1) . walkThroughInput2 [] "" . lines) <$> readFile "day14input.txt"
