@@ -1,4 +1,4 @@
-module Day2data where
+module Day2imput where
 
 getdata :: [(Int, Int, Char, String)]
 getdata =  [(9, 11, 'p', "pppppppppxblp"), 

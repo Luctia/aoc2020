@@ -20,7 +20,7 @@ part1' :: [[String]] -> Int
 part1' [[start], is] = getResult (getBestBus startInt (getTimestamps is) 10000) startInt
                      where startInt = (read start::Int)
 
-part1 = (part1' . map (splitOn ",") . lines) <$> readFile "day13data.txt"
+part1 = (part1' . map (splitOn ",") . lines) <$> readFile "day13input.txt"
 
 -- For part 2, we use the Chinese remainder theorem.
 
@@ -41,4 +41,4 @@ getSolution pairs = total `mod` bign
 calculateX :: Int -> Int -> Int
 calculateX multiplier modulator = head [ x | x <- [1..multiplier], mod (x * multiplier) modulator == 1 ]
 
-part2 = (getSolution . getIdIndexPairs 0 . splitOn "," . (!! 1) .lines) <$> readFile "day13data.txt"
+part2 = (getSolution . getIdIndexPairs 0 . splitOn "," . (!! 1) .lines) <$> readFile "day13input.txt"

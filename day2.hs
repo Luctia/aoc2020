@@ -1,6 +1,6 @@
 module Main where
 
-import Day2data
+import Day2input
 import Data.List
 
 main = do

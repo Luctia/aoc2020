@@ -22,7 +22,7 @@ countUnique (x:y:xs)
 getSumCounts :: String -> Int
 getSumCounts input = sum [ countUnique x | x <- listToGroups input ]
 
-main = getSumCounts <$> readFile "day6data.txt"
+main = getSumCounts <$> readFile "day6input.txt"
 
 getSumInCommon :: String -> Int
 getSumInCommon input = sum [ countInCommon x | x <- listToPeople input ]
@@ -40,4 +40,4 @@ commonElements [x, y]
   | otherwise = intersect y x
 commonElements (x:y:xs) = commonElements ((commonElements [x, y]):xs)
 
-main2 = getSumInCommon <$> readFile "day6data.txt"
+main2 = getSumInCommon <$> readFile "day6input.txt"

@@ -21,7 +21,7 @@ calculateColumn (char:chars) min max
   where range = [min..max]
         maxIndex = length range - 1
 
-main = (maximum . getAllSeatIDs . lines) <$> readFile "day5data.txt"
+main = (maximum . getAllSeatIDs . lines) <$> readFile "day5input.txt"
 
 getAllSeatIDs :: [String] -> [Int]
 getAllSeatIDs [] = []
@@ -32,6 +32,6 @@ getMissingSeatID (id1:id2:ids)
   | id1 + 1 == id2 = getMissingSeatID (id2:ids)
   | otherwise = id1 + 1
 
-main2 = (getMissingSeatID . sort . getAllSeatIDs . lines) <$> readFile "day5data.txt"
+main2 = (getMissingSeatID . sort . getAllSeatIDs . lines) <$> readFile "day5input.txt"
 
-maintest = (sort . getAllSeatIDs . lines) <$> readFile "day5data.txt"
+maintest = (sort . getAllSeatIDs . lines) <$> readFile "day5input.txt"

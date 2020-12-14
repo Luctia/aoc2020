@@ -41,7 +41,7 @@ unique' (element:list) seen
   | elem element seen = unique' list seen
   | otherwise = element:(unique' list (element:seen))
 
-part1 = (length . findAllContainers "shiny gold" . map getRule . lines) <$> readFile "day7data.txt"
+part1 = (length . findAllContainers "shiny gold" . map getRule . lines) <$> readFile "day7input.txt"
 
 findRule :: String -> [Rule] -> Rule
 findRule _ [] = Rule "" (Content [])
@@ -58,4 +58,4 @@ countTotalContents' needle rules
   | otherwise = 1 + sum [ amount * (countTotalContents' container rules) | (amount, container) <- contents ]
   where (Rule from (Content contents)) = findRule needle rules
 
-part2 = (countTotalContents "shiny gold" . map getRule . lines) <$> readFile "day7data.txt"
+part2 = (countTotalContents "shiny gold" . map getRule . lines) <$> readFile "day7input.txt"

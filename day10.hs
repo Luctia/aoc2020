@@ -17,7 +17,7 @@ lookfor needle ((key, value):maps)
   | needle == key = value
   | otherwise = lookfor needle maps
 
-part1 = ((\x -> (lookfor 1 x) * (lookfor 3 x)) . countDifferences [] . sort . map (\x -> read x::Int) . lines) <$> readFile "day10data.txt"
+part1 = ((\x -> (lookfor 1 x) * (lookfor 3 x)) . countDifferences [] . sort . map (\x -> read x::Int) . lines) <$> readFile "day10input.txt"
 
 countAllPosLinks :: [Int] -> Int
 countAllPosLinks sockets = last $ countAllPosLinks' 1 paddedSockets [1]
@@ -29,4 +29,4 @@ countAllPosLinks' index sockets preds
   | otherwise = countAllPosLinks' (index + 1) sockets (preds ++ [linksToHere])
   where linksToHere = sum [ preds!!x | x <- [(index - 4)..(index - 1)], x >= 0, sockets!!x >= sockets!!index - 3 ]
 
-part2 = (countAllPosLinks . sort . map (\x -> read x::Int) . lines) <$> readFile "day10data.txt"
+part2 = (countAllPosLinks . sort . map (\x -> read x::Int) . lines) <$> readFile "day10input.txt"

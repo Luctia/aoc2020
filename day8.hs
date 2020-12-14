@@ -39,7 +39,7 @@ executeProgramButStopAfter1Loop (Program program) = executeProgramButStopAfter1L
 operationsToProgram :: [Operation] -> Program
 operationsToProgram ops = Program ops
 
-part1 = (executeProgramButStopAfter1Loop . operationsToProgram . map (convertToOperation) . lines) <$> readFile "day8data.txt"
+part1 = (executeProgramButStopAfter1Loop . operationsToProgram . map (convertToOperation) . lines) <$> readFile "day8input.txt"
 
 executeProgramAndDetectLoop' :: Program -> Operation -> [Int] -> Int -> Int -> Bool
 executeProgramAndDetectLoop' _ (Finished) _ _ accumulator = False
@@ -90,4 +90,4 @@ findCorrectSwap (prog:progs)
   | executeProgramAndDetectLoop prog  = findCorrectSwap progs
   | otherwise = executeProgram prog
 
-part2 = (findCorrectSwap . swapNopsJmps . operationsToProgram . map (convertToOperation) . lines) <$> readFile "day8data.txt"
+part2 = (findCorrectSwap . swapNopsJmps . operationsToProgram . map (convertToOperation) . lines) <$> readFile "day8input.txt"
