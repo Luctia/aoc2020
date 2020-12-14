@@ -17,7 +17,7 @@ Here you can find all my Advent of Code implementations for 2020. This year, I'v
 | Day 11        | :x: :x:                              |           |
 | Day 12        | :heavy_check_mark: :heavy_check_mark:|           |
 | Day 13        | :heavy_check_mark: :heavy_check_mark:|           |
-| Day 14        | :x: :x:                              |           |
+| Day 14        | :heavy_check_mark: :x:               |           |
 | Day 15        | :x: :x:                              |           |
 | Day 16        | :x: :x:                              |           |
 | Day 17        | :x: :x:                              |           |
