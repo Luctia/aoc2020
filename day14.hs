@@ -19,7 +19,7 @@ getMaskedValue (m:mask) (v:value)
   | otherwise = (read [m]::Int):(getMaskedValue mask value)
 getMaskedValue _ _ = error "Bitmask does not have the same length as input value"
 
--- decToBin outputs a list that is 32 elements long.
+-- decToBin outputs a list that is 36 elements long.
 decToBin :: Int -> [Int]
 decToBin 0 = replicate 36 0
 decToBin n = (replicate (36 - (length outcome)) 0) ++ (reverse $ outcome)
@@ -67,7 +67,7 @@ walkThroughInput2 memory mask (inst:insts)
         addToMemory = [ (pos, newValue) | pos <- allpos ]
 
 getMemorySum2 :: [Int] -> [(Int, Int)] -> Int
-getMemorySum2 _ [] = 0
+getMemorySum2 seen [] = 0
 getMemorySum2 seen (m:memory)
   | elem (fst m) seen = getMemorySum2 seen memory
   | otherwise = (snd m) + getMemorySum2 ((fst m):seen) memory
