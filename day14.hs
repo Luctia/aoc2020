@@ -1,4 +1,6 @@
+import Data.List
 import Data.List.Split
+import Data.Function
 
 setMemory :: [(Int, Int)] -> Int -> Int -> [(Int, Int)]
 setMemory [] location newValue = [(location, newValue)]
@@ -72,4 +74,4 @@ getMemorySum2 previous (m:memory)
   | (fst m) == previous = getMemorySum2 previous memory
   | otherwise = (snd m) + getMemorySum2 (fst m) memory
 
-part2 = (getMemorySum2 (-1) . walkThroughInput2 [] "" . lines) <$> readFile "day14input.txt"
+part2 = (getMemorySum2 (-1) . sortBy (compare `on` fst) . walkThroughInput2 [] "" . lines) <$> readFile "day14input.txt"
