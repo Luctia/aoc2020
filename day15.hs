@@ -1,28 +1,20 @@
-input :: [Int]
-input = [16, 1, 0, 18, 12, 14, 19]
--- input = [3,1,2]
+import qualified Data.Map as Map
 
-playGame :: [(Int, Int)] -> Int -> Int -> Int -> Int
-playGame mentions previous i max
-  | i == max = if previousMention == (-1) then 0 else distance
-  | previousMention == (-1) = playGame ((previous, i - 1):mentions) 0 (i + 1) max
-  | otherwise = playGame (addPrevious mentions previous (i - 1)) distance (i + 1) max
-  where distance = i - 1 - previousMention
-        previousMention = findPreviousMention mentions previous
+main = do
+    let startingNumbers = [16,1,0,18,12,14,19]
+    
+    let startingIndex = (last startingNumbers, length startingNumbers, Map.fromList $ zip (init startingNumbers) [1..])
 
-addPrevious :: [(Int, Int)] -> Int -> Int -> [(Int, Int)]
-addPrevious (mention:mentions) number i
-  | fst mention == number = (number, i):mentions
-  | otherwise = mention:(addPrevious mentions number i)
+    print $ getNumberAtTurn 2020 startingIndex
+    print $ getNumberAtTurn 30000000 startingIndex
 
-findPreviousMention :: [(Int, Int)] -> Int -> Int
--- findPreviousMention [] _ = (-1)
--- findPreviousMention (pair:pairs) needle
---   | fst pair == needle = snd pair
---   | otherwise = findPreviousMention pairs needle
-findPreviousMention mentions needle
-  | filtered == [] = (-1)
-  | otherwise = snd $ head filtered
-  where filtered = filter (\x -> fst x == needle) mentions
+getNumberAtTurn :: Int -> (Int, Int, Map.Map Int Int) -> Int
+getNumberAtTurn turn (lastNumber, lastTurn, memory)
+    | turn == lastTurn = lastNumber
+    | otherwise = getNumberAtTurn turn (sayNextNumber (lastNumber, lastTurn, memory))
 
-part1 = playGame (zip input [1..]) (last input) (length input + 1) 2020
+sayNextNumber :: (Int, Int, Map.Map Int Int) -> (Int, Int, Map.Map Int Int)
+sayNextNumber (lastNumber, lastTurn, memory) = case Map.lookup lastNumber memory of
+    Nothing -> (0, currentTurn, Map.insert lastNumber lastTurn memory)
+    (Just lastSpokenOnTurn) -> (lastTurn - lastSpokenOnTurn, currentTurn, Map.insert lastNumber lastTurn memory)
+    where currentTurn = lastTurn + 1
